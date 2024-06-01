@@ -14,14 +14,14 @@ import fantaImage from '../assets/fanta.png';
 import './App.css';
 
 const createMenuItems = (): MenuItem[] => [
-  { name: 'Hamburger', price: 250, image: hamburgerImage },
-  { name: 'Cheeseburger', price: 300, image: cheeseburgerImage },
-  { name: 'Fries', price: 75, image: friesImage },
+  { name: 'Hamburger', price: 80, image: hamburgerImage },
+  { name: 'Cheeseburger', price: 90, image: cheeseburgerImage },
+  { name: 'Fries', price: 45, image: friesImage },
   { name: 'Coffee', price: 70, image: coffeeImage },
-  { name: 'Tea', price: 30, image: teaImage },
-  { name: 'Cola', price: 50, image: colaImage },
-  { name: 'Sprite', price: 50, image: spriteImage },
-  { name: 'Fanta', price: 50, image: fantaImage }
+  { name: 'Tea', price: 50, image: teaImage },
+  { name: 'Cola', price: 40, image: colaImage },
+  { name: 'Sprite', price: 40, image: spriteImage },
+  { name: 'Fanta', price: 40, image: fantaImage }
 ];
 
 const App = () => {
@@ -42,6 +42,12 @@ const App = () => {
     });
   };
 
+  const removeItemFromOrder = (name: string) => {
+    setOrderItems((prevItems) =>
+      prevItems.filter((item) => item.name !== name)
+    );
+  };
+
   const calculateTotalPrice = () => {
     return orderItems.reduce((total, item) => total + item.price * item.quantity, 0);
   };
@@ -49,7 +55,7 @@ const App = () => {
   return (
     <div className="App">
       <MenuItemList items={createMenuItems()} onAddItem={addItemToOrder} />
-      <OrderList items={orderItems} />
+      <OrderList items={orderItems} onRemoveItem={removeItemFromOrder} />
       <div className="controls">
         <TotalPrice total={calculateTotalPrice()} />
       </div>
