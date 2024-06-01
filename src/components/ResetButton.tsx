@@ -5,7 +5,9 @@ interface ResetButtonProps {
 }
 
 const ResetButton: React.FC<ResetButtonProps> = ({ onReset }) => (
-  <button className="reset-button" onClick={onReset}>Reset Order</button>
+  <button className="reset-button" onClick={onReset}>
+    Reset Order
+  </button>
 );
 
 export default ResetButton;

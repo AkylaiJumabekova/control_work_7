@@ -22,20 +22,22 @@ const createMenuItems = (): MenuItem[] => [
   { name: 'Tea', price: 50, image: teaImage },
   { name: 'Cola', price: 40, image: colaImage },
   { name: 'Sprite', price: 40, image: spriteImage },
-  { name: 'Fanta', price: 40, image: fantaImage }
+  { name: 'Fanta', price: 40, image: fantaImage },
 ];
 
 const App = () => {
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
 
   const addItemToOrder = (item: MenuItem) => {
-    setOrderItems(prevItems => {
-      const existingItem = prevItems.find(orderItem => orderItem.name === item.name);
+    setOrderItems((prevItems) => {
+      const existingItem = prevItems.find(
+        (orderItem) => orderItem.name === item.name,
+      );
       if (existingItem) {
-        return prevItems.map(orderItem =>
+        return prevItems.map((orderItem) =>
           orderItem.name === item.name
             ? { ...orderItem, quantity: orderItem.quantity + 1 }
-            : orderItem
+            : orderItem,
         );
       } else {
         return [...prevItems, { ...item, quantity: 1 }];
@@ -44,7 +46,7 @@ const App = () => {
   };
 
   const removeItemFromOrder = (name: string) => {
-    setOrderItems(prevItems => {
+    setOrderItems((prevItems) => {
       return prevItems.reduce<OrderItem[]>((acc, item) => {
         if (item.name === name) {
           if (item.quantity > 1) {
@@ -63,7 +65,10 @@ const App = () => {
   };
 
   const calculateTotalPrice = () => {
-    return orderItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    return orderItems.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0,
+    );
   };
 
   return (

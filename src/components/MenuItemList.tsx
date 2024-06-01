@@ -10,7 +10,7 @@ interface MenuItemListProps {
 const MenuItemList: React.FC<MenuItemListProps> = ({ items, onAddItem }) => {
   return (
     <div className="menu-item-list">
-      {items.map(item => (
+      {items.map((item) => (
         <MenuItemComponent key={item.name} item={item} onAdd={onAddItem} />
       ))}
     </div>
