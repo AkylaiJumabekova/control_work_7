@@ -9,12 +9,16 @@ interface OrderListProps {
 const OrderList: React.FC<OrderListProps> = ({ items, onRemoveItem }) => {
   return (
     <div className="order-list">
-      {items.map(item => (
-        <div key={item.name} className="order-item">
-          {item.name} x{item.quantity} - {item.price * item.quantity} som
-          <button onClick={() => onRemoveItem(item.name)}>Delete</button>
-        </div>
-      ))}
+      {items.length === 0 ? (
+        <p>Order is empty. Please add some items</p>
+      ) : (
+        items.map(item => (
+          <div key={item.name} className="order-item">
+            {item.name} x{item.quantity} - {item.price * item.quantity} som
+            <button onClick={() => onRemoveItem(item.name)}>Delete</button>
+          </div>
+        ))
+      )}
     </div>
   );
 };

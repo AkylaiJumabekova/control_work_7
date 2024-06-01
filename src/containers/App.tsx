@@ -43,9 +43,20 @@ const App = () => {
   };
 
   const removeItemFromOrder = (name: string) => {
-    setOrderItems((prevItems) =>
-      prevItems.filter((item) => item.name !== name)
-    );
+    setOrderItems((prevItems) => {
+      const newItems = [...prevItems];
+      const index = newItems.findIndex(orderItem => orderItem.name === name);
+
+      if (index !== -1) {
+        if (newItems[index].quantity > 1) {
+          newItems[index].quantity -= 1;
+        } else {
+          newItems.splice(index, 1);
+        }
+      }
+
+      return newItems;
+    });
   };
 
   const calculateTotalPrice = () => {
