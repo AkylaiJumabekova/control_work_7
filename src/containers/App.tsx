@@ -2,6 +2,7 @@ import { useState } from 'react';
 import MenuItemList from '../components/MenuItemList';
 import OrderList from '../components/OrderList';
 import TotalPrice from '../components/TotalPrice';
+import ResetButton from '../components/ResetButton';
 import { MenuItem, OrderItem } from '../types';
 import hamburgerImage from '../assets/hamburger.png';
 import cheeseburgerImage from '../assets/cheeseburger.png';
@@ -28,35 +29,37 @@ const App = () => {
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
 
   const addItemToOrder = (item: MenuItem) => {
-    setOrderItems((prevItems) => {
-      const newItems = [...prevItems];
-      const index = newItems.findIndex(orderItem => orderItem.name === item.name);
-
-      if (index !== -1) {
-        newItems[index].quantity += 1;
+    setOrderItems(prevItems => {
+      const existingItem = prevItems.find(orderItem => orderItem.name === item.name);
+      if (existingItem) {
+        return prevItems.map(orderItem =>
+          orderItem.name === item.name
+            ? { ...orderItem, quantity: orderItem.quantity + 1 }
+            : orderItem
+        );
       } else {
-        newItems.push({ ...item, quantity: 1 });
+        return [...prevItems, { ...item, quantity: 1 }];
       }
-
-      return newItems;
     });
   };
 
   const removeItemFromOrder = (name: string) => {
-    setOrderItems((prevItems) => {
-      const newItems = [...prevItems];
-      const index = newItems.findIndex(orderItem => orderItem.name === name);
-
-      if (index !== -1) {
-        if (newItems[index].quantity > 1) {
-          newItems[index].quantity -= 1;
+    setOrderItems(prevItems => {
+      return prevItems.reduce<OrderItem[]>((acc, item) => {
+        if (item.name === name) {
+          if (item.quantity > 1) {
+            acc.push({ ...item, quantity: item.quantity - 1 });
+          }
         } else {
-          newItems.splice(index, 1);
+          acc.push(item);
         }
-      }
-
-      return newItems;
+        return acc;
+      }, []);
     });
+  };
+
+  const resetOrder = () => {
+    setOrderItems([]);
   };
 
   const calculateTotalPrice = () => {
@@ -67,9 +70,8 @@ const App = () => {
     <div className="App">
       <MenuItemList items={createMenuItems()} onAddItem={addItemToOrder} />
       <OrderList items={orderItems} onRemoveItem={removeItemFromOrder} />
-      <div className="controls">
-        <TotalPrice total={calculateTotalPrice()} />
-      </div>
+      <TotalPrice total={calculateTotalPrice()} />
+      <ResetButton onReset={resetOrder} />
     </div>
   );
 };
